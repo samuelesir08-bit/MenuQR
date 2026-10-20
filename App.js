@@ -297,11 +297,29 @@ export default function App() {
     });
   };
 
-  const publishBusiness = () => {
-    if (business.categories.length === 0) {
-      setNotice("Aggiungi almeno una categoria prima di pubblicare.");
-      return;
-    }
+  
+const publishBusiness = () => {
+  if (business.categories.length === 0) {
+    setNotice("Aggiungi almeno una categoria prima di pubblicare.");
+    return;
+  }
+
+  const hasVisibleProducts = business.categories.some((category) =>
+    category.items.some((item) => item.visible)
+  );
+
+  if (!hasVisibleProducts) {
+    setNotice("Rendi visibile almeno un prodotto prima di pubblicare.");
+    return;
+  }
+
+  updateBusiness({ published: true });
+  setPage("preview");
+  setNotice(
+    "Catalogo pubblicato nell'anteprima. Per renderlo accessibile online serve ancora attivare hosting e database."
+  );
+};
+
 
     updateBusiness({ published: true });
     setNotice(
